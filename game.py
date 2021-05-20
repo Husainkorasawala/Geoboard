@@ -1,4 +1,3 @@
-from numpy import matrix
 from constants import N, BYELLOW, CBLACK, CRED, CGREEN, CEND, SHAPES, X, COORDS
 import json
 
@@ -73,7 +72,7 @@ def takeInputs():
     return (row-1, col-1)
 
 
-def drawLines(r, c, coords, matrix):
+def drawLines(r, c, coords, matrix):  # sourcery no-metrics
     """
         This function draws lines between the two vertices. If there's only one vertix then print that vertax
         and after that prints the line between current vertex and the previous vertex
