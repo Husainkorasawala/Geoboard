@@ -4,6 +4,18 @@ import json
 
 
 def printcheckboard(n, matrix, warning=False, toR=0, toC=0, fromR=0, fromC=0):
+    """ 
+        This method prints out the 10 x 10 grid on console with all colors in that.
+
+        Inputs:
+            n: Numbers of Rows & Columns ( 10x10, 12x12, 15x15 )
+            matrix: The list of all the Rows & Columns
+            warning: if True: Print the red & green highlights when editing the shape
+            toR: Row number of point to which the vertex of the shape is the be shifted
+            toC: Column number of point to which the vertex of the shape is the be shifted
+            fromR: Current Row number of the vertex from where to shift the vertex
+            fromc: Current Column number of the vertex from where to shift the vertex
+    """
     print("\t ", end="")
     for k in range(n):
         print(f"C{k+1}", end="\t")
@@ -31,12 +43,19 @@ def printcheckboard(n, matrix, warning=False, toR=0, toC=0, fromR=0, fromC=0):
 
 
 def _extracted_from_printcheckboard_():
+    """
+        This function is extracted from the printBoard function to reduce its complexity and is only 
+        been used in printBoard function 
+    """
     print()
     print()
     print()
 
 
 def takeInputs():
+    """
+        This function returns inputs of Row number and Column number taken from the user
+    """
     row = 0
     col = 0
     while True:
@@ -55,6 +74,16 @@ def takeInputs():
 
 
 def drawLines(r, c, coords, matrix):
+    """
+        This function draws lines between the two vertices. If there's only one vertix then print that vertax
+        and after that prints the line between current vertex and the previous vertex
+
+        Inputs:
+            r: Row Number of the vertex taken from the user
+            c: Column number of the vertex taken from the user
+            matrix: matrix: The list of all the Rows & Columns
+            coords: Intermediate list of the the vertices of a particular shape
+    """
     coords.append((r, c))
     v = len(coords)-1
     if v > 0:
@@ -92,6 +121,11 @@ def drawLines(r, c, coords, matrix):
 
 
 def createShape(matrix, coords):
+    """
+        This function creates a whole new shape ( only closed figures ). Runs until ( calls drawLine function ) the first given coordinate of
+        the vertex doesn't match the last given ( or current ) coordinate of the vertex.
+        Then asks user for the name of the shape and then calls saveShape function
+    """
     v = len(coords)-1
     while True:
         print("Creating New Shape!")
@@ -119,6 +153,9 @@ def createShape(matrix, coords):
 
 
 def saveShape(message, coords):
+    """
+        Saves the shape in sample.json file ( "sample" is just dummy name can be anything but must be specified in saveShape function )
+    """
     name = input(message)
     SHAPES[name] = coords
     with open("sample.json", "w") as outfile:
@@ -127,6 +164,11 @@ def saveShape(message, coords):
 
 
 def editShape(matrix, coords):
+    """
+        This function edits the previously saved shapes ( in sample.json file ).
+        Firstly provides a list of the saved shapes and gives a user to choose which shape to edit.
+        Lastly edits the shape and save the newly edited shape in sample.json file ( "sample" is just dummy name can be anything but must be specified in saveShape function )
+    """
     datalist = list(SHAPES.keys())
     if SHAPES:
         _extracted_from_editShape_(datalist, SHAPES, coords, matrix)
@@ -135,6 +177,10 @@ def editShape(matrix, coords):
 
 
 def _extracted_from_editShape_(datalist, dataDict, coords, matrix):
+    """
+        This function is extracted from the editShapes function to reduce its complexity and is only
+        been used in editShapes function. ( all the working of this function is explained in editShapes function )
+    """
     for i in range(len(datalist)):
         print(datalist[i], end="\n")
 
@@ -169,6 +215,11 @@ def _extracted_from_editShape_(datalist, dataDict, coords, matrix):
 
 
 def openShape(matrix, coords):
+    """
+        This function opens the previously saved shapes ( in sample.json file ).
+        Firstly provides a list of the saved shapes and gives a user to choose which shape to delete ( same as editShape function ).
+        Lastly opens the shape and prints it on the console
+    """
     datalist = list(SHAPES.keys())
     if SHAPES:
         for i in datalist:
@@ -184,6 +235,11 @@ def openShape(matrix, coords):
 
 
 def deleteShape(matrix, coords):
+    """
+        This function deletes the previously saved shapes ( in sample.json file ).
+        Firstly provides a list of the saved shapes and gives a user to choose which shape to delete ( same as editShape & openShape function ).
+        Lastly opens the shape, prints it on the console for compulsion and then deletes it
+    """
     datalist = list(SHAPES.keys())
     if SHAPES:
         _extracted_from_deleteShape_(datalist, SHAPES, coords, matrix)
@@ -192,6 +248,10 @@ def deleteShape(matrix, coords):
 
 
 def _extracted_from_deleteShape_(datalist, dataDict, coords, matrix):
+    """
+        This function is extracted from the deleteShape function to reduce its complexity and is only
+        been used in deleteShapes function. ( all the working of this function is explained in deleteShapes function )
+    """
     for i in datalist:
         print(i, end="\n")
 
@@ -205,21 +265,40 @@ def _extracted_from_deleteShape_(datalist, dataDict, coords, matrix):
         json.dump(dataDict, outfile)
 
 
-while True:
-    print("[O] Open Shapes")
-    print("[C] Create New Shapes")
-    print("[E] Edit Shapes")
-    print("[D] Delete Shapes")
-    userAnswer = input()
-    if userAnswer.lower() not in ["c", "e", "o", "d"]:
-        print("Please enter a valid answer")
-    else:
-        break
-if userAnswer.lower() == "o":
-    openShape(X, COORDS)
-elif userAnswer.lower() == "c":
-    createShape(X, COORDS)
-elif userAnswer.lower() == "e":
-    editShape(X, COORDS)
-elif userAnswer.lower() == "d":
-    deleteShape(X, COORDS)
+def main():
+    """
+        This is the starting point of the code.
+        When the program starts it gives user 4 options:
+            Open Shapes.
+            Create New Shapes.
+            Delete Shapes.
+            Edit Shapes.
+        All these option are assigned to different letter which means if the particular letter in given as an input by
+        the user the respective option will be selected and the respective function will be called.
+
+        O/o ---. Open Shapes ---> openShape().
+        C/c ---. Create New Shapes ---> createShape().
+        E/e ---. Edit Shapes ---> editShape().
+        D/d ---. Delete Shapes ---> deleteShape().
+    """
+    while True:
+        print("[O] Open Shapes")
+        print("[C] Create New Shapes")
+        print("[E] Edit Shapes")
+        print("[D] Delete Shapes")
+        userAnswer = input()
+        if userAnswer.lower() not in ["c", "e", "o", "d"]:
+            print("Please enter a valid answer")
+        else:
+            break
+    if userAnswer.lower() == "o":
+        openShape(X, COORDS)
+    elif userAnswer.lower() == "c":
+        createShape(X, COORDS)
+    elif userAnswer.lower() == "e":
+        editShape(X, COORDS)
+    elif userAnswer.lower() == "d":
+        deleteShape(X, COORDS)
+
+
+main()

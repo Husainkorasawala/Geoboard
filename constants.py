@@ -1,6 +1,9 @@
 import json
 import numpy as np
 
+"""
+    Reading Files saved in sample.json
+"""
 with open('sample.json') as data:
     dataDict = dict(json.load(data))
 
